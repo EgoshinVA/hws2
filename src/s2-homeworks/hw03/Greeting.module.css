@@ -1,0 +1,37 @@
+.greetingForm {
+}
+
+.inputAndButtonContainer {
+}
+
+.error {
+    color: red;
+}
+
+.input {
+}
+
+.input:focus {
+}
+
+.errorInput {
+    outline: red 2px solid;
+}
+
+.button {
+}
+
+.button:focus {
+}
+
+.button:active {
+}
+
+.button:disabled {
+}
+
+.text {
+}
+
+.greeting {
+}
