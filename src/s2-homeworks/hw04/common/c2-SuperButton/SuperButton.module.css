@@ -1,7 +1,7 @@
 .button {
     background-color: #387bf6;
     padding: 5px 20px;
-    border-radius: 5px;
+    border-radius: 4px;
     color: white;
     border: none;
 }
@@ -14,6 +14,7 @@
 .secondary {
     background-color: transparent;
     border: #387bf6 2px solid;
+    padding: 3px 18px;
     color: #387bf6;
 }
 

@@ -1,7 +1,16 @@
 .burgerMenuIcon {
+    cursor: pointer;
+}
+
+.hideButton {
+    opacity: 0;
 }
 
 .header {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 10%;
+    box-shadow: 0 1px 10px black;
 }
 
 .header h1 {

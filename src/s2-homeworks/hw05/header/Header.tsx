@@ -25,13 +25,12 @@ export const Header: FC<PropsType> = ({open, handleOpen}) => {
     return (
         <>
             <div id={'hw5-header'} className={s.header}>
-                {!open && <img
+                <img
                     src={burgerIcon}
                     id={'hw5-burger-menu'}
-                    className={s.burgerMenuIcon}
+                    className={!open ? s.burgerMenuIcon : s.hideButton}
                     onClick={handleOpen}
-                    alt={'open menu'}
-                />}
+                    alt={'open menu'}/>
                 <h1>{pageName}</h1>
             </div>
         </>
