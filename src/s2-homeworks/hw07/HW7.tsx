@@ -21,11 +21,11 @@ const HW7 = () => {
     const [value, onChangeOption] = useState(1) // селект и радио должны работать синхронно
 
     return (
-        <div id={'hw7'}>
+        <div id={'hw7'} className={s2.hw}>
             <div className={s2.hwTitle}>Homework #7</div>
 
             {/*демонстрация возможностей компонент:*/}
-            <div className={s2.hw}>
+            <div>
                 <div className={s.container}>
                     <div>
                         <SuperSelect
