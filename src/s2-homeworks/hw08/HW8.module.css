@@ -5,6 +5,10 @@
 }
 
 .users {
+    width: 30%;
+    margin-bottom: 20px;
+    border: 1px solid #dddddd;
+    border-collapse: collapse;
 }
 
 .buttonsContainer {
@@ -14,6 +18,10 @@
 }
 
 .thead {
+    background-color: #c5c5c5;
+    font-weight: bold;
+    padding: 5px;
+    border: 1px solid #dddddd;
 }
 
 .nameCol {
