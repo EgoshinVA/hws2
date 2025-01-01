@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import SuperButton from '../hw04/common/c2-SuperButton/SuperButton'
 import {restoreState} from '../hw06/localStorage/localStorage'
 import s from './Clock.module.css'
@@ -7,29 +7,29 @@ function Clock() {
     const [timerId, setTimerId] = useState<number | undefined>(undefined)
     // for autotests // не менять // можно подсунуть в локалСторэдж нужную дату, чтоб увидеть как она отображается
     const [date, setDate] = useState<Date>(new Date(restoreState('hw9-date', Date.now())))
-    const [show, setShow] = useState<boolean>(true)
-    const intervalRef = useRef<any>(null);
+    const [show, setShow] = useState<boolean>(false)
+    const [newInterval, setNewInterval] = useState<any>(null)
 
     useEffect(() => {
         return () => {
-            if (intervalRef.current) {
-                clearInterval(intervalRef.current);
+            if (newInterval) {
+                clearInterval(newInterval);
             }
         };
     }, []);
 
     const start = () => {
-        if (intervalRef.current) return;
+        if (newInterval) return;
 
-        intervalRef.current = setInterval(() => {
-            setDate(new Date());
-        }, 1000);
+        setNewInterval(setInterval(() => {
+            setDate(new Date(restoreState('hw9-date', Date.now())));
+        }, 1000))
     }
 
     const stop = () => {
-        if (intervalRef.current) {
-            clearInterval(intervalRef.current);
-            intervalRef.current = null;
+        if (newInterval) {
+            clearInterval(newInterval);
+            setNewInterval(null)
         }
     }
 
@@ -63,7 +63,7 @@ function Clock() {
                 </span>
             </div>
 
-            <div id={'hw9-more'} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+            <div id={'hw9-more'}>
                 <div className={s.more}>
                     {show ? (
                         <>
@@ -81,14 +81,14 @@ function Clock() {
             <div className={s.buttonsContainer}>
                 <SuperButton
                     id={'hw9-button-start'}
-                    disabled={intervalRef.current} // пишут студенты // задизэйблить если таймер запущен
+                    disabled={newInterval}
                     onClick={start}
                 >
                     start
                 </SuperButton>
                 <SuperButton
                     id={'hw9-button-stop'}
-                    disabled={!intervalRef.current} // пишут студенты // задизэйблить если таймер не запущен
+                    disabled={!newInterval}
                     onClick={stop}
                 >
                     stop
