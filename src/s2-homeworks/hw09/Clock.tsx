@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import SuperButton from '../hw04/common/c2-SuperButton/SuperButton'
 import {restoreState} from '../hw06/localStorage/localStorage'
 import s from './Clock.module.css'
@@ -7,32 +7,47 @@ function Clock() {
     const [timerId, setTimerId] = useState<number | undefined>(undefined)
     // for autotests // не менять // можно подсунуть в локалСторэдж нужную дату, чтоб увидеть как она отображается
     const [date, setDate] = useState<Date>(new Date(restoreState('hw9-date', Date.now())))
-    const [show, setShow] = useState<boolean>(false)
+    const [show, setShow] = useState<boolean>(true)
+    const intervalRef = useRef<any>(null);
+
+    useEffect(() => {
+        return () => {
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+            }
+        };
+    }, []);
 
     const start = () => {
-        // пишут студенты // запустить часы (должно отображаться реальное время, а не +1)
-        // сохранить ид таймера (https://learn.javascript.ru/settimeout-setinterval#setinterval)
+        if (intervalRef.current) return;
 
+        intervalRef.current = setInterval(() => {
+            setDate(new Date());
+        }, 1000);
     }
 
     const stop = () => {
-        // пишут студенты // поставить часы на паузу, обнулить ид таймера (timerId <- undefined)
-
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
+        }
     }
 
-    const onMouseEnter = () => { // пишут студенты // показать дату если наведена мышка
-
+    const onMouseEnter = () => {
+        setShow(true)
     }
-    const onMouseLeave = () => { // пишут студенты // спрятать дату если мышка не наведена
-
+    const onMouseLeave = () => {
+        setShow(false)
     }
 
-    const stringTime = 'date->time' || <br/> // часы24:минуты:секунды (01:02:03)/(23:02:03)/(24:00:00)/(00:00:01) // пишут студенты
-    const stringDate = 'date->date' || <br/> // день.месяц.год (01.02.2022) // пишут студенты, варианты 01.02.0123/01.02.-123/01.02.12345 не рассматриваем
+    const getTime = (time: number) => time < 10 ? '0' + time : time
 
-    // день недели на английском, месяц на английском (https://learn.javascript.ru/intl#intl-datetimeformat)
-    const stringDay = 'date->day' || <br/> // пишут студенты
-    const stringMonth = 'date->month' || <br/> // пишут студенты
+    const stringTime = getTime(date.getHours()) + ':' + getTime(date.getMinutes()) + ':' + getTime(date.getSeconds()) ||
+        <br/> // часы24:минуты:секунды (01:02:03)/(23:02:03)/(24:00:00)/(00:00:01) // пишут студенты
+    const stringDate = getTime(date.getDate()) + '.' + getTime(date.getMonth() + 1) + '.' + date.getFullYear() || <br/> // день.месяц.год (01.02.2022) // пишут студенты, варианты 01.02.0123/01.02.-123/01.02.12345 не рассматриваем
+
+    const stringDay = date.toLocaleString('default', {weekday: 'long'}) || <br/> // пишут студенты
+    const stringMonth = date.toLocaleString('default', {month: 'long'}) || <br/> // пишут студенты
 
     return (
         <div className={s.clock}>
@@ -48,7 +63,7 @@ function Clock() {
                 </span>
             </div>
 
-            <div id={'hw9-more'}>
+            <div id={'hw9-more'} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
                 <div className={s.more}>
                     {show ? (
                         <>
@@ -66,14 +81,14 @@ function Clock() {
             <div className={s.buttonsContainer}>
                 <SuperButton
                     id={'hw9-button-start'}
-                    disabled={true} // пишут студенты // задизэйблить если таймер запущен
+                    disabled={intervalRef.current} // пишут студенты // задизэйблить если таймер запущен
                     onClick={start}
                 >
                     start
                 </SuperButton>
                 <SuperButton
                     id={'hw9-button-stop'}
-                    disabled={true} // пишут студенты // задизэйблить если таймер не запущен
+                    disabled={!intervalRef.current} // пишут студенты // задизэйблить если таймер не запущен
                     onClick={stop}
                 >
                     stop
